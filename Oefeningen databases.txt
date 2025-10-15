@@ -1,0 +1,502 @@
+Oefeningen databases
+====================
+
+1 - 4
+11 - 15
+20 
+22 - 30
+33
+36 - 40
+
+
+Oef 1
+
+Er zijn 109 landen
+
+SELECT c.country, COUNT(c.country)
+FROM country c;
+
+Oef 2
+
+Nog niet op te lossen, 2 tabellen nodig
+
+Oef 3
+
+Er zijn 6 talen
+
+SELECT l.name
+FROM language l
+ORDER BY l.name ASC;
+
+Oef 4
+
+9 resultaten
+
+SELECT a.first_name, a.last_name 
+FROM actor a
+WHERE a.last_name LIKE "%SON%"
+ORDER BY a.first_name ASC;
+
+Oef 5
+
+1000 resultaten
+
+SELECT c.name, f.title
+FROM film f 
+LEFT JOIN film_category fc ON fc.film_id = f.film_id
+LEFT JOIN category c ON c.category_id = fc.category_id 
+ORDER BY c.name ASC;
+
+Oef 6
+
+16 resultaten
+
+SELECT c.name, COUNT(c.name)
+FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id 
+GROUP BY c.name;
+
+
+Oef 7
+
+200 resultaten
+
+SELECT a.first_name, a.last_name, COUNT(fa.film_id) as aantal
+FROM actor a
+LEFT JOIN film_actor fa ON fa.actor_id = a.actor_id
+LEFT JOIN film f ON fa.film_id = f.film_id
+GROUP BY a.actor_id;
+
+Oef 8
+
+SELECT f.title, i.inventory_id, COUNT(i.inventory_id) as aantal
+FROM film f 
+LEFT JOIN inventory i ON f.film_id = i.film_id
+GROUP BY i.inventory_id
+HAVING aantal = 0
+ORDER BY aantal ASC;
+
+
+Oef 9
+
+resultaat : 0 klanten
+
+SELECT c.first_name, c.last_name, COUNT(r.rental_id) AS aantal
+FROM customer c 
+LEFT JOIN rental r ON c.customer_id = r.customer_id
+GROUP BY r.customer_id  
+ORDER BY `aantal` ASC
+HAVING aantal<1;
+
+Oef 10
+
+Count = 68
+
+SELECT f.title, c.name, COUNT(f.title)
+FROM film f
+LEFT JOIN film_category fc ON f.film_id = fc.film_id
+LEFT JOIN category c ON c.category_id = fc.category_id
+LEFT JOIN language l ON f.language_id = l.language_id 
+WHERE l.name = "English" AND c.name = "Documentary"
+GROUP BY c.name;
+
+Oef 11
+
+2 resultaten
+
+SELECT a.first_name, a.last_name
+FROM actor a
+WHERE a.first_name = "Scarlett"
+
+
+Oef 12
+
+3 resultaten
+
+SELECT a.first_name, a.last_name
+FROM actor a
+WHERE a.last_name = "Johansson"
+ORDER BY a.first_name ASC;
+
+Oef 13
+
+121 resultaten
+
+SELECT DISTINCT a.last_name
+FROM actor a
+ORDER BY a.last_name ASC;
+
+Oef 14
+
+198 resultaten
+
+SELECT a.first_name, a.last_name, COUNT(CONCAT (a.first_name, a.last_name)) AS aantal
+FROM actor a
+GROUP BY CONCAT(a.first_name, a.last_name)
+HAVING aantal = 1;
+
+Oef 15
+
+SUSAN DAVIS komt 2 keer voor
+
+SELECT a.first_name, a.last_name, COUNT(CONCAT (a.first_name, a.last_name)) AS aantal
+FROM actor a
+GROUP BY CONCAT(a.first_name, a.last_name)
+HAVING aantal > 1;
+
+Oef 16
+
+Resultaat is GINA DEGENERES 42
+
+
+SELECT a.first_name, a.last_name, COUNT(f.film_id) as aantal
+FROM actor a
+LEFT JOIN film_actor fa ON a.actor_id=fa.actor_id
+LEFT JOIN film f ON f.film_id = fa.film_id
+GROUP BY a.actor_id
+ORDER BY aantal DESC
+LIMIT 1;
+
+Oef 17
+
+Antwoord: Ja, en er zijn er 4 voorradig
+
+SELECT f.title, s.store_id, COUNT(f.title) as aantal
+FROM film f 
+LEFT JOIN inventory i ON f.film_id = i.film_id 
+LEFT JOIN store s ON i.store_id = s.store_id 
+WHERE s.store_id = 1 AND f.title = "Academy Dinosaur"
+GROUP BY f.title;
+
+Oef 19
+
+23 resultaten
+
+SELECT f.title, r.rental_date, r.return_date
+FROM film f 
+LEFT JOIN inventory i ON i.film_id = f.film_id
+LEFT JOIN rental r ON i.inventory_id = r.inventory_id
+WHERE f.title = "Academy Dinosaur" AND r.rental_date IS NOT NULL;
+
+Oef 20
+
+gemiddelde duur : 115.2720
+
+SELECT DISTINCT AVG(f.length)
+FROM film f;
+
+Oef 21
+
+16 resultaten
+
+SELECT c.name, AVG(f.rental_duration)
+FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+LEFT JOIN film f ON fc.film_id = f.film_id
+GROUP BY c.category_id;
+
+
+Oef 22
+
+resultaat 199 acteurs
+
+SELECT DISTINCT a.first_name, a.last_name
+FROM actor a;
+
+Oef 23
+
+200 resultaten
+
+SELECT UPPER(CONCAT (a.first_name, " ", a.last_name)) AS acteurnaam
+FROM actor a;
+
+Oef 24
+
+antwoord : JOE SWANK
+
+SELECT a.actor_id, a.first_name, a.last_name
+FROM actor a
+WHERE a.first_name = "Joe";
+
+Oef 25
+
+4 resultaten
+
+SELECT a.actor_id, a.first_name, a.last_name
+FROM actor a
+WHERE a.last_name LIKE "%gen%";
+
+
+Oef 26
+
+10 resultaten
+
+SELECT a.actor_id, a.first_name, a.last_name
+FROM actor a
+WHERE a.last_name LIKE "%LI%"
+ORDER BY a.last_name ASC, a.first_name ASC;
+
+
+Oef 27
+
+3 resultaten
+
+SELECT *
+FROM country c
+WHERE c.country IN ("Afghanistan", "Bangladesh", "China");
+
+Oef 28 => OPNIEUW MAKEN !
+199 resultaten
+
+SELECT COUNT(DISTINCT CONCAT(a.first_name, ' ', a.last_name)) AS aantal_unieke_namen
+FROM actor a;
+
+Oef 29
+
+198 resultaten
+
+SELECT CONCAT (a.first_name, " ", a.last_name) as fullname, COUNT(*) as aantal
+FROM actor a
+GROUP BY fullname
+HAVING aantal = 1;
+
+Oef 30 => OPNIEUW MAKEN !
+
+1 resultaat
+
+SELECT CONCAT(a.first_name, ' ', a.last_name) AS full_name, COUNT(*) AS aantal
+FROM actor a
+GROUP BY full_name
+HAVING COUNT(*) > 1;
+
+Oef 31 
+
+Susan Davies met 54 keer
+
+SELECT CONCAT (a.first_name, " ", a.last_name) as name, COUNT(f.film_id) as aantal
+FROM actor a
+LEFT JOIN film_actor fa ON a.actor_id=fa.actor_id
+LEFT JOIN film f ON fa.film_id=f.film_id
+GROUP BY name
+ORDER BY aantal DESC
+LIMIT 1;
+
+Oef 32
+
+958 resultaten
+
+SELECT f.title as filmtitel, COUNT(f.title) as aantal_keer_verhuurd
+FROM rental r 
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id 
+GROUP BY f.title
+ORDER BY aantal_keer_verhuurd DESC;
+
+Oef 33
+
+Antwoord = 6
+
+SELECT i.film_id, COUNT(i.film_id)
+FROM inventory i 
+WHERE i.film_id = 439;
+
+Oef 34
+
+Mike Hillyer 33482.50
+Jon Stephens 33924.06
+
+SELECT f.first_name, f.last_name, SUM(p.amount)
+FROM staff f 
+JOIN payment p ON f.staff_id = p.staff_id 
+GROUP BY p.staff_id;
+
+Oef 35
+
+599 resultaten
+
+SELECT CONCAT(c.last_name," ", c.first_name) as naam, SUM(p.amount)
+FROM customer c 
+JOIN payment p ON c.customer_id = p.customer_id 
+GROUP BY p.customer_id
+ORDER BY naam ASC;
+
+Oef 36
+
+39 resultaten
+
+SELECT f.title, f.description, f.rating, f.length
+FROM film f
+WHERE f.length > 180;
+
+Oef 37
+
+15725 resultaten
+
+SELECT p.payment_id, p.amount, p.payment_date
+FROM payment p 
+WHERE p.payment_date > "2005-05-27";
+
+Oef 38
+
+11 resultaten
+
+SELECT * 
+FROM customer c 
+WHERE c.first_name LIKE "%n" AND c.last_name LIKE "s%";
+
+Oef 39
+
+2 resultaten
+
+SELECT * 
+FROM customer c 
+WHERE c.active = 0 AND c.last_name LIKE "m%";
+
+Oef 40
+
+4 resultaten
+
+SELECT * 
+FROM category c
+WHERE c.category_id > 4 AND (c.name LIKE "C%" OR c.name LIKE "S%" OR c.name LIKE "T%");
+
+Oef 41 
+
+1 resultaat
+
+SELECT s.staff_id, s.first_name, s.last_name, s.address_id, s.picture, s.email, s.store_id, s.active, s.username, s.last_update
+FROM staff s 
+WHERE s.password IS NOT NULL;
+
+Oef 42
+
+55 resultaten
+
+SELECT a.last_name, COUNT(a.last_name) as aantal
+FROM actor a
+GROUP BY a.last_name
+HAVING aantal>1;
+
+Oef 43
+
+
+
+
+Oef Bibliotheek_db
+
+CREATE TABLE auteurs ( 
+  auteur_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  
+  CONSTRAINT uq_first_last UNIQUE (first_name, last_name)
+  
+) ENGINE=InnoDB; 
+
+CREATE TABLE boeken ( 
+  boek_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  titel VARCHAR(100) NOT NULL,
+  auteur_id INT UNSIGNED,
+    
+  CONSTRAINT boeken_auteur
+  FOREIGN KEY (auteur_id)
+  REFERENCES auteurs(auteur_id)
+  ON UPDATE RESTRICT
+  ON DELETE RESTRICT
+) ENGINE=InnoDB; 
+
+CREATE TABLE leners ( 
+  lener_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL
+) ENGINE=InnoDB; 
+
+CREATE TABLE plaats ( 
+  plaats_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  postcode VARCHAR(20) NOT NULL,
+  plaats VARCHAR(100) NOT NULL,
+    
+  CONSTRAINT uq_postcode_plaats UNIQUE (postcode, plaats)   
+) ENGINE=InnoDB; 
+
+CREATE TABLE adres ( 
+  adres_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  adreslijn1 VARCHAR(100) NOT NULL,
+  adreslijn2 VARCHAR(100)
+) ENGINE=InnoDB; 
+
+CREATE TABLE lener_adres (
+    lener_adres_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    lener_id INT UNSIGNED,
+    adres_id INT UNSIGNED,
+
+    CONSTRAINT uq_lener_adres UNIQUE (lener_id, adres_id), 
+
+    CONSTRAINT fk_lener_lener_adres
+    FOREIGN KEY (lener_id)
+    REFERENCES leners(lener_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT,
+    
+    CONSTRAINT fk_adres_lener_adres
+    FOREIGN KEY (adres_id)
+    REFERENCES adres(adres_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+) ENGINE=InnoDB; 
+    
+CREATE TABLE adres_plaats (
+    adres_plaats_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    adres_id INT UNSIGNED,
+    plaats_id INT UNSIGNED,
+
+    CONSTRAINT uq_adres_plaats UNIQUE (adres_id, plaats_id),
+    
+    CONSTRAINT fk_adres_adres_plaats
+    FOREIGN KEY (adres_id)
+    REFERENCES adres(adres_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT,
+    
+    CONSTRAINT fk_plaats_adres_plaats
+    FOREIGN KEY (plaats_id)
+    REFERENCES plaats(plaats_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE uitleningen (
+    uitlening_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    boek_id INT UNSIGNED,
+    lener_id INT UNSIGNED,
+    uitdatum DATE NOT NULL,
+    terugdatum DATE NOT NULL,
+    werd_teruggebracht BOOLEAN NOT NULL,
+    
+    CONSTRAINT fk_uitleningen_boek
+    FOREIGN KEY (boek_id)
+    REFERENCES boeken(boek_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT, 
+    
+    CONSTRAINT fk_uitleningen_lener
+    FOREIGN KEY (lener_id)
+    REFERENCES leners(lener_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+
+
+
+Oef Stored procedures & views
+
+
+
+
+
+
+
+
+
+
